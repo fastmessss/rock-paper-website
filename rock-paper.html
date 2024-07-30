@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="rock-paper-scissors.css">
+    <style>
+        .move-button:disabled {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <p class="title">Rock Paper Scissors</p>
+    <button id="rock-button" onclick="handleClick('rock');" class="move-button">
+        <img src="rock.png" class="move-icon1">
+    </button>
+    <button id="paper-button" onclick="handleClick('paper');" class="move-button">
+        <img src="paper.png" class="move-icon1">
+    </button>
+    <button id="scissors-button" onclick="handleClick('scissors');" class="move-button">
+        <img src="scissors.png" class="move-icon1">
+    </button>
+
+    <p class="js-result result"></p>
+    <p class="js-moves"></p>
+    <p class="js-score"></p>
+    <p id="countdown"></p>
+    
+    <button onclick="
+        score.wins = 0;
+        score.losses = 0;
+        score.ties = 0;
+        localStorage.removeItem('score');
+    " class="move-icon">Reset</button>
+
+    <script src="rock-paper-scissors.js"></script>
+    <script>
+        function handleClick(move) {
+            disableButtons();
+            startCountdown(3, move);
+        }
+
+        function disableButtons() {
+            document.getElementById('rock-button').disabled = true;
+            document.getElementById('paper-button').disabled = true;
+            document.getElementById('scissors-button').disabled = true;
+        }
+
+        function enableButtons() {
+            document.getElementById('rock-button').disabled = false;
+            document.getElementById('paper-button').disabled = false;
+            document.getElementById('scissors-button').disabled = false;
+        }
+
+        function startCountdown(seconds, move) {
+            let countdownElement = document.getElementById('countdown');
+            countdownElement.textContent = seconds;
+            let countdownInterval = setInterval(() => {
+                seconds--;
+                if (seconds > 0) {
+                    countdownElement.textContent = seconds;
+                } else {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = '';
+                    enableButtons();
+                    if (move === 'rock') {
+                        pickcomputerMoverock();
+                    } else if (move === 'paper') {
+                        pickcomputerMove();
+                    } else if (move === 'scissors') {
+                        pickcomputerMovescissors();
+                    }
+                    playgame(move);
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
